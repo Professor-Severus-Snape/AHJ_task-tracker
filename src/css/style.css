@@ -89,10 +89,19 @@ body {
   height: 20px;
   border: 1px solid black;
   border-radius: 50%;
+  cursor: pointer;
+}
+
+.task__btn:hover {
+  background-color: greenyellow;
 }
 
 .task__btn_pin {
   margin: auto;
+}
+
+.task__btn:has(.task__btn_pin):hover {
+  background-color: rgb(252, 80, 204);
 }
 
 .copyrights {

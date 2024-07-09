@@ -1,7 +1,7 @@
 export default class PinnedTasks {
   // <div class="pinned-tasks">
   //   <h2 class="title">Pinned:</h2>
-  //   <div class="pinned-tasks__none">No pinned tasks</div> || <div class="pinned-tasks__none hidden">No pinned tasks</div>
+  //   <div class="pinned-tasks__none">No pinned tasks</div>
   // </div>
   constructor() {
     this.element = document.createElement('div');

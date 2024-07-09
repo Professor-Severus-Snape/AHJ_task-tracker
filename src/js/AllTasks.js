@@ -1,7 +1,7 @@
 export default class AllTasks {
   // <div class="all-tasks">
   //   <h2 class="title">All Tasks:</h2>
-  //   <div class="all-tasks__none">No tasks found</div> || <div class="all-tasks__none hidden">No tasks found</div>
+  //   <div class="all-tasks__none">No tasks found</div>
   // </div>
   constructor() {
     this.element = document.createElement('div');

@@ -2,6 +2,7 @@ export default class InputTooltip {
   // <div class="input-tooltip">
   //   <input class="tasks__input" type="text" placeholder="Введите задачу">
   //   <div class="tooltip hidden">Поле не должно быть пустым!</div>
+  //   <div class="tooltip hidden">Заметка уже существует!</div>
   // </div>
   constructor() {
     this.element = document.createElement('div');
@@ -12,10 +13,14 @@ export default class InputTooltip {
     this.tasksInputElement.type = 'text';
     this.tasksInputElement.placeholder = 'Введите задачу';
 
-    this.tooltipElement = document.createElement('div');
-    this.tooltipElement.classList.add('tooltip', 'hidden');
-    this.tooltipElement.textContent = 'Поле не должно быть пустым!';
+    this.tooltipEmptyElement = document.createElement('div');
+    this.tooltipEmptyElement.classList.add('tooltip', 'hidden');
+    this.tooltipEmptyElement.textContent = 'Поле не должно быть пустым!';
 
-    this.element.append(this.tasksInputElement, this.tooltipElement);
+    this.tooltipExistElement = document.createElement('div');
+    this.tooltipExistElement.classList.add('tooltip', 'hidden');
+    this.tooltipExistElement.textContent = 'Заметка уже существует!';
+
+    this.element.append(this.tasksInputElement, this.tooltipEmptyElement, this.tooltipExistElement);
   }
 }
