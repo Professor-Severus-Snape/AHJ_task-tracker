@@ -1,7 +1,12 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
@@ -10,13 +15,74 @@ a {
   color: inherit;
 }
 
-#root {
-  padding: 50px;
-  min-height: 100vh;
-
+body {
   background-color: lightgray;
+  padding: 30px;
+  min-height: 100vh;
+}
+
+.container {
+  margin: 0 auto;
+  width: 400px;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  padding: 20px;
+  min-height: calc(100vh - (30px * 2) - 38px);
+  background-color: lightsteelblue;
+}
+
+.title {
+  padding-bottom: 15px;
+}
+
+.main-title {
+  text-align: center;
+}
+
+.tasks__input {
+  display: block;
+  padding: 10px;
+  width: 100%;
+
+  font-size: inherit;
+}
+
+.tasks__input:focus {
+  outline: 2px solid rgb(0, 60, 255);
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: lightcyan;
+}
+
+.task:not(:last-child) {
+  border-bottom: 0;
+}
+
+.task__btn {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.task__btn_pin {
+  margin: auto;
 }
 
 .copyrights {
+  padding: 20px 20px 0;
   text-align: center;
 }

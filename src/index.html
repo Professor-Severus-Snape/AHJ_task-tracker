@@ -7,8 +7,49 @@
     <title>Task tracker</title>
   </head>
   <body>
-    <div id="root">
-      <div class="tasks-container"></div>
+    <div class="container">
+      <div class="tasks">
+        <h1 class="main-title">Task tracker</h1>
+        <input class="tasks__input" type="text" placeholder="Введите задачу">
+        <div class="pinned-tasks">
+          <h2 class="title">Pinned:</h2>
+          <div class="task task_pinned">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn">
+              <div class="task__btn_pin">v</div>
+            </div>
+          </div>
+          <div class="task task_pinned">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn">
+              <div class="task__btn_pin">v</div>
+            </div>
+          </div>
+        </div>
+        <div class="all-tasks">
+          <h2 class="title">All Tasks:</h2>
+          <div class="task">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn"></div>
+          </div>
+          <div class="task">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn"></div>
+          </div>
+          <div class="task">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn"></div>
+          </div>
+          <div class="task">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn"></div>
+          </div>
+          <div class="task">
+            <div class="task__text">Task Name</div>
+            <div class="task__btn"></div>
+          </div>
+        </div>
+      </div>
       <address class="copyrights">
         <a class="copyrights__link" href="https://github.com/Professor-Severus-Snape">© Professor-Severus-Snape, 2024</a>
       </address>
