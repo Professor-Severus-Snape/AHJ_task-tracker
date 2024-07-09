@@ -21,6 +21,10 @@ body {
   min-height: 100vh;
 }
 
+.hidden {
+  display: none;
+}
+
 .container {
   margin: 0 auto;
   width: 400px;
@@ -42,6 +46,15 @@ body {
 
 .main-title {
   text-align: center;
+}
+
+.input-tooltip {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  color: rgb(255, 0, 0);
 }
 
 .tasks__input {

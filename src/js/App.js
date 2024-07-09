@@ -1,3 +1,4 @@
+import Controller from './Controller';
 import Copyrights from './Copyrights';
 
 export default class App {
@@ -6,5 +7,7 @@ export default class App {
     if (copyrights.copyrights !== '© Professor-Severus-Snape, 2024') {
       Copyrights.stoleRights();
     }
+
+    this.controller = new Controller();
   }
 }
