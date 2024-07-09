@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#root {
+  padding: 50px;
+  min-height: 100vh;
+
+  background-color: lightgray;
+}
+
+.copyrights {
+  text-align: center;
+}
