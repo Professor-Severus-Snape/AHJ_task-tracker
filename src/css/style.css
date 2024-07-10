@@ -21,13 +21,9 @@ body {
   min-height: 100vh;
 }
 
-.hidden {
-  display: none;
-}
-
 .container {
   margin: 0 auto;
-  width: 400px;
+  width: 500px;
 }
 
 .tasks {
@@ -70,10 +66,9 @@ body {
 }
 
 .task {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
 
-  padding: 10px 20px;
+  padding: 15px 50px 15px 30px;
   border: 1px solid black;
   border-radius: 50px;
   background-color: lightcyan;
@@ -84,11 +79,16 @@ body {
 }
 
 .task__btn {
-  display: flex;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+
   width: 20px;
   height: 20px;
   border: 1px solid black;
   border-radius: 50%;
+
   cursor: pointer;
 }
 
@@ -97,7 +97,15 @@ body {
 }
 
 .task__btn_pin {
-  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 20px;
+  height: 20px;
+
+  text-align: center;
 }
 
 .task__btn:has(.task__btn_pin):hover {
@@ -107,4 +115,14 @@ body {
 .copyrights {
   padding: 20px 20px 0;
   text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .container {
+    width: 100%;
+  }
 }
