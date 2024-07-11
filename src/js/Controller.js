@@ -25,9 +25,9 @@ export default class Controller {
     this.allTasks = this.allTasksElement.element;
     this.noTasks = this.allTasksElement.noTasksElement;
 
-    this.tasksList = []; // массив введенных пользователем задач -> NOTE: массив объектов { текст заметки: заметка }
-    this.allTasksList = []; // массив не закрепленных задач -> NOTE: массив строк!!!
-    this.pinnedTasksList = []; // массив закрепленных задач -> NOTE: массив строк!!!
+    this.tasksList = []; // [{ текст заметки: заметка из раздела All Tasks }, ...]
+    this.allTasksList = []; // ['текст заметки из раздела All Tasks', ...]
+    this.pinnedTasksList = []; // ['текст заметки из раздела Pinned Tasks', ...]
 
     this.init();
   }
@@ -35,8 +35,9 @@ export default class Controller {
   init() {
     this.render();
     this.input.addEventListener('input', this.onInput.bind(this));
-    // this.input.addEventListener('change', this.onChange.bind(this)); // FIXME: что использовать - change или keyup ???
-    this.input.addEventListener('keyup', this.onEnterKeyUp.bind(this)); // FIXME: что использовать - change или keyup ???
+    this.input.addEventListener('keyup', this.onEnterKeyUp.bind(this));
+    this.onClickHandler = this.onClick.bind(this);
+    this.onClickPinHandler = this.onClickPin.bind(this);
   }
 
   // отрисовка первоначального состояния трекера:
@@ -54,8 +55,6 @@ export default class Controller {
   }
 
   onInput() {
-    console.warn('Событие input!!!'); // NOTE: отладка !!!
-
     this.hideTooltips();
 
     this.taskText = this.input.value.trim().toLowerCase(); // содержимое input-а
@@ -68,32 +67,8 @@ export default class Controller {
     this.sort();
   }
 
-  // FIXME: кажется, что change хуже, чем keyup...
-  // onChange() {
-  //   console.warn('Событие change!!!'); // NOTE: отладка !!!
-
-  //   this.resetInput();
-  //   this.hideTooltips();
-  //   this.showTasks();
-
-  //   if (!this.taskText) {
-  //     this.tooltipEmpty.classList.remove('hidden');
-  //     return;
-  //   }
-
-  //   // проверка наличия в списке заметок элемента с ключом введенного текста:
-  //   if (!this.tasksList.find((obj) => obj[this.taskText])) {
-  //     this.addNewTask(); // FIXME: при любом клике в сторону добавляет ненужную заметку !!! 
-  //   } else {
-  //     this.tooltipExists.classList.remove('hidden');
-  //   }
-  // }
-
-  // FIXME: кажется, что keyup лучше, чем change...
   onEnterKeyUp(event) {
-    if(event.code === 'Enter') {
-      console.warn('Событие keyup!!!'); // NOTE: отладка !!!
-
+    if (event.code === 'Enter') {
       this.resetInput();
       this.hideTooltips();
       this.showTasks();
@@ -103,9 +78,10 @@ export default class Controller {
         return;
       }
 
-      // проверка наличия в списке заметок элемента с ключом введенного текста:
-      if (!this.tasksList.find((obj) => obj[this.taskText])) {
-        this.addNewTask();
+      // проверка наличия в списках элемента с введенным текстом:
+      if (!this.allTasksList.includes(this.taskText)
+        && !this.pinnedTasksList.includes(this.taskText)) {
+        this.addNewTask(this.taskText);
       } else {
         this.tooltipExists.classList.remove('hidden');
       }
@@ -116,10 +92,10 @@ export default class Controller {
     this.input.value = '';
   }
 
-  addNewTask() {
-    const currentTask = this.createNewTask(this.taskText);
-    this.tasksList.push({ [this.taskText]: currentTask }); // {текст заметки: заметка}
-    this.allTasksList.push(this.taskText); // массив строк (текст заметки) -> ['123', 'qwerty']
+  addNewTask(text) {
+    const currentTask = this.createNewTask(text);
+    this.tasksList.push({ [text]: currentTask });
+    this.allTasksList.push(text);
     this.allTasks.append(currentTask);
     this.noTasks.classList.add('hidden');
   }
@@ -138,46 +114,47 @@ export default class Controller {
 
     const taskBtn = document.createElement('div');
     taskBtn.classList.add('task__btn');
-    taskBtn.addEventListener('click', this.onClick.bind(this));
+    taskBtn.addEventListener('click', this.onClickHandler);
 
     taskElement.append(taskText, taskBtn);
     return taskElement;
   }
 
   onClick(event) {
-    console.warn('Событие click -> добавление заметки в pinned !!!'); // NOTE: отладка !!!
-
     // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-    if (this.taskText) {
-      console.log('клик по кнопке - чистим поле'); // NOTE: отладка !!!
+    if (this.input.value) {
       this.resetInput();
-      this.hideTooltips(); // FIXME: как сделать, чтобы подсказка не мелькала ???
+      this.hideTooltips();
     }
 
-    const task = event.target.closest('.task'); // заметка, которую перемещаем в pinned
-    const taskIndex = this.allTasksList.findIndex((str) => str === task.textContent);
+    const task = event.target.closest('.task');
+    const text = task.textContent;
+    const allTaskIndex = this.allTasksList.findIndex((str) => str === text);
 
-    // console.log('task: ', task); // NOTE: отладка !!!
-    // console.log('task.textContent: ', task.textContent); // NOTE: отладка !!!
-    // console.log('taskIndex: ', taskIndex); // NOTE: отладка !!!
+    // 1. перемещаем строку из this.allTasksList в this.pinnedTasksList:
+    this.pinnedTasksList.push(...this.allTasksList.splice(allTaskIndex, 1));
 
-    // console.log('До переноса -> this.pinnedTasksList: ', this.pinnedTasksList); // NOTE: отладка !!!
-    // console.log('До переноса -> this.allTasksList: ', this.allTasksList); // NOTE: отладка !!!
+    // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
+    const taskIndex = this.tasksList.findIndex((obj) => Object.keys(obj).includes(text));
 
-    this.pinnedTasksList.push(...this.allTasksList.splice(taskIndex, 1)); // массив строк (текст заметки) -> ['123', 'qwerty']
+    this.tasksList.splice(taskIndex, 1);
 
-    // console.log('После переноса -> this.pinnedTasksList: ', this.pinnedTasksList); // NOTE: отладка !!!
-    // console.log('После переноса -> this.allTasksList: ', this.allTasksList); // NOTE: отладка !!!
+    // 3. создаем узел в DOM (в разделе Pinned Tasks):
+    this.addPinnedTask(task.textContent);
 
-    // console.log('this.tasksList ДО: ', this.tasksList); // NOTE: отладка !!!
-    task.remove(); // NB! удаляем заметку со страницы, но в this.tasksList она остается!
-    // console.log('this.tasksList ПОСЛЕ: ', this.tasksList); // NOTE: отладка !!!
+    // 4. удаляем обработчик:
+    const taskBtn = task.querySelector('.task__btn');
+    taskBtn.removeEventListener('click', this.onClickHandler);
+
+    // 5. удаляем узел из DOM (из раздела All Tasks):
+    task.remove();
 
     if (!this.allTasksList.length) {
       this.noTasks.classList.remove('hidden');
     }
 
-    this.addPinnedTask(task.textContent);
+    // 5. снимаем фильтр:
+    this.showTasks();
   }
 
   addPinnedTask(text) {
@@ -206,7 +183,7 @@ export default class Controller {
     const taskBtnPin = document.createElement('div');
     taskBtnPin.classList.add('task__btn_pin');
     taskBtnPin.textContent = 'v';
-    taskBtnPin.addEventListener('click', this.onClickPin.bind(this));
+    taskBtnPin.addEventListener('click', this.onClickPinHandler);
 
     taskBtn.append(taskBtnPin);
 
@@ -215,62 +192,52 @@ export default class Controller {
   }
 
   onClickPin(event) {
-    console.warn('Событие click -> убираем заметку из pinned !!!'); // NOTE: отладка !!!
-
     // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-    if (this.taskText) {
-      console.log('клик по кнопке - чистим поле'); // NOTE: отладка !!!
+    if (this.input.value) {
       this.resetInput();
-      this.hideTooltips(); // FIXME: как сделать, чтобы подсказка не мелькала ???
+      this.hideTooltips();
     }
 
-    const task = event.target.closest('.task'); // заметка, которую убираем из pinned
-    const taskIndex = this.pinnedTasksList.findIndex((str) => str === task.textContent.slice(0, -1));
+    const task = event.target.closest('.task');
+    const text = task.textContent.slice(0, -1);
+    const taskIndex = this.pinnedTasksList.findIndex((str) => str === text);
 
-    // console.log('кликнутая закрепленная задача: ', task); // NOTE: отладка !!!
-    // console.log('текст кликнутой закрепленной задачи без "v": ', task.textContent.slice(0, -1)); // "123"  // NOTE: отладка !!!
-    // console.log('индекс объекта с подходящим текстом: ', taskIndex); // NOTE: отладка !!!
+    // 1. Удаление строки из this.pinnedTasksList:
+    this.pinnedTasksList.splice(taskIndex, 1);
 
-    // console.log('До переноса -> this.pinnedTasksList: ', this.pinnedTasksList); // NOTE: отладка !!!
-    // console.log('До переноса -> this.allTasksList: ', this.allTasksList); // NOTE: отладка !!!
+    // 2. Создание узла в DOM (раздел All Tasks) и строки в this.allTasksList:
+    this.addNewTask(text);
 
-    this.allTasksList.push(...this.pinnedTasksList.splice(taskIndex, 1)); // массив all заметок -  // { '123': <div class="task">...</div> }
- 
-    // console.log('После переноса -> this.pinnedTasksList: ', this.pinnedTasksList); // NOTE: отладка !!!
-    // console.log('После переноса -> this.allTasksList: ', this.allTasksList); // NOTE: отладка !!!
-    
-    const currentTask = this.createNewTask(task.textContent.slice(0, -1));
-    this.allTasks.append(currentTask);
-    this.noTasks.classList.add('hidden');
-    // console.log('this.tasksList ДО: ', this.tasksList); // NOTE: отладка !!!
-    task.remove(); // NB! удаляем заметку со страницы, но в this.tasksList она остается!
-    // console.log('this.tasksList ПОСЛЕ: ', this.tasksList); // NOTE: отладка !!!
+    // 3. удаляем обработчик:
+    const taskBtnPin = task.querySelector('.task__btn_pin');
+    taskBtnPin.removeEventListener('click', this.onClickPinHandler);
+
+    // 4. удаляем сам узел из DOM (из раздела Pinned Tasks):
+    task.remove();
 
     if (!this.pinnedTasksList.length) {
       this.noPinnedTasks.classList.remove('hidden');
     }
+
+    // 5. снимаем фильтр:
+    this.showTasks();
   }
 
-  // FIXME: отмеченные прежде заметки подходят под любые параметры !!! Почему ???
   sort() {
     this.showTasks();
 
-    const filterList = this.allTasksList.filter((str) => str.startsWith(this.taskText)); // массив подходящих заметок -> ['1', '12', '123']
-    console.log('массив подходящих заметок (filterList): ', filterList);
+    const filterList = this.allTasksList.filter((str) => str.startsWith(this.taskText));
 
-    // this.tasksList = [ { текст заметки: заметка }, { текст заметки: заметка } ... ] 
+    // this.tasksList = [ { текст заметки: заметка }, { текст заметки: заметка } ... ]
     this.tasksList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
         if (!filterList.includes(key)) {
-          console.log('не подходит: ', key);  // NOTE: отладка !!!
-          value.classList.add('hidden'); // FIXME: не скрывает ранее отмеченные заметки !!!
+          value.classList.add('hidden');
           if (!filterList.length) {
             this.noTasks.classList.remove('hidden');
           } else {
             this.noTasks.classList.add('hidden');
           }
-        } else {
-          console.log('подходит: ', key); // NOTE: отладка !!!
         }
       });
     });
@@ -284,10 +251,9 @@ export default class Controller {
 
     this.noTasks.classList.add('hidden');
 
-    // this.tasksList = [ { текст заметки: заметка }, { текст заметки: заметка } ... ] 
+    // this.tasksList = [ { текст заметки: заметка }, { текст заметки: заметка } ... ]
     this.tasksList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
-        // this.allTasksList = [ 'текст заметки', 'текст заметки', ... ] 
         this.allTasksList.forEach((text) => {
           if (text === key) {
             value.classList.remove('hidden');
