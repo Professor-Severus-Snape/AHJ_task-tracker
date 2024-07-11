@@ -5389,7 +5389,6 @@ var App = /*#__PURE__*/function () {
     this.pinnedTasksList = []; // ['текст заметки из раздела Pinned Tasks', ...]
 
     this.copyrights = new Copyrights().element;
-    this.init();
   }
   return App_createClass(App, [{
     key: "init",
@@ -5634,7 +5633,7 @@ var App = /*#__PURE__*/function () {
         this.noTasks.classList.remove('hidden');
       }
 
-      // 5. снимаем фильтр:
+      // 6. снимаем фильтр:
       this.showTasks();
     }
   }, {
