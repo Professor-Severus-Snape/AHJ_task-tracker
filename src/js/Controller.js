@@ -18,7 +18,6 @@ export default class Controller {
     this.input = this.inputTooltipElement.tasksInputElement;
     this.tooltipEmpty = this.inputTooltipElement.tooltipEmptyElement;
     this.tooltipExists = this.inputTooltipElement.tooltipExistElement;
-    this.tooltipLength = this.inputTooltipElement.tooltipLengthElement;
 
     this.pinnedTasksElement = new PinnedTasks();
     this.pinnedTasks = this.pinnedTasksElement.element;
@@ -71,7 +70,6 @@ export default class Controller {
   hideTooltips() {
     this.tooltipEmpty.classList.add('hidden');
     this.tooltipExists.classList.add('hidden');
-    this.tooltipLength.classList.add('hidden');
   }
 
   // если на момент события в поле был текст, то чистим поле и убираем подсказки:
@@ -212,11 +210,12 @@ export default class Controller {
     this.hideTooltips();
 
     this.taskText = this.input.value.trim().toLowerCase(); // содержимое input-а
-    if (this.input.value.length === 25) {
-      this.tooltipLength.classList.remove('hidden');
-    } else if (!this.taskText) {
+
+    if (!this.taskText) {
       this.showTasks();
+      return;
     }
+
     this.sort();
   }
 
