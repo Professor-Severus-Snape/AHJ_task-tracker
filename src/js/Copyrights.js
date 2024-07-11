@@ -1,7 +1,20 @@
 export default class Copyrights {
+  // <address class="copyrights">
+  //   <a class="copyrights__link" href="https://github.com/Professor-Severus-Snape">© Professor-Severus-Snape, 2024</a>
+  // </address>
   constructor() {
-    const link = document.querySelector('.copyrights__link');
-    this.copyrights = link ? link.textContent : '';
+    this.element = document.createElement('address');
+    this.element.classList.add('copyrights');
+
+    this.link = document.createElement('a');
+    this.link.classList.add('copyrights__link');
+    this.link.href = 'https://github.com/Professor-Severus-Snape';
+    this.link.textContent = '© Professor-Severus-Snape, 2024';
+
+    this.element.append(this.link);
+
+    // const link = document.querySelector('.copyrights__link');
+    // this.copyrights = link ? link.textContent : '';
   }
 
   static stoleRights() {

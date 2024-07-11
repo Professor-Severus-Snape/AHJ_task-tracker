@@ -1,3 +1,5 @@
+import Copyrights from './Copyrights';
+import Tasks from './Tasks';
 import MainTitle from './MainTitle';
 import InputTooltip from './InputTooltip';
 import PinnedTasks from './PinnedTasks';
@@ -5,8 +7,9 @@ import AllTasks from './AllTasks';
 
 export default class Controller {
   constructor() {
-    this.container = document.querySelector('.container'); // NOTE: нужно ли динамическое создание ???
-    this.tasks = document.querySelector('.tasks'); // NOTE: нужно ли динамическое создание ???
+    this.container = document.querySelector('.container');
+
+    this.tasks = new Tasks().element;
 
     this.mainTitle = new MainTitle().element;
 
@@ -29,11 +32,14 @@ export default class Controller {
     this.allTasksList = []; // ['текст заметки из раздела All Tasks', ...]
     this.pinnedTasksList = []; // ['текст заметки из раздела Pinned Tasks', ...]
 
+    this.copyrights = new Copyrights().element;
+
     this.init();
   }
 
   init() {
     this.render();
+    this.checkRights();
     this.input.addEventListener('input', this.onInput.bind(this));
     this.input.addEventListener('keyup', this.onEnterKeyUp.bind(this));
     this.onClickHandler = this.onClick.bind(this);
@@ -42,10 +48,18 @@ export default class Controller {
 
   // отрисовка первоначального состояния трекера:
   render() {
+    this.container.append(this.tasks);
+    this.container.append(this.copyrights);
     this.tasks.append(this.mainTitle);
     this.tasks.append(this.inputTooltip);
     this.tasks.append(this.pinnedTasks);
     this.tasks.append(this.allTasks);
+  }
+
+  checkRights() {
+    if (this.copyrights.textContent !== '© Professor-Severus-Snape, 2024') {
+      Copyrights.stoleRights();
+    }
   }
 
   hideTooltips() {
@@ -58,8 +72,7 @@ export default class Controller {
     this.hideTooltips();
 
     this.taskText = this.input.value.trim().toLowerCase(); // содержимое input-а
-    // if (this.input.value.length === 30) { // NOTE: вернуть после отладки
-    if (this.input.value.length === 3) { // NOTE: отладка !!!
+    if (this.input.value.length === 25) {
       this.tooltipLength.classList.remove('hidden');
     } else if (!this.taskText) {
       this.showTasks();
@@ -136,7 +149,6 @@ export default class Controller {
 
     // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
     const taskIndex = this.tasksList.findIndex((obj) => Object.keys(obj).includes(text));
-
     this.tasksList.splice(taskIndex, 1);
 
     // 3. создаем узел в DOM (в разделе Pinned Tasks):
