@@ -5229,10 +5229,9 @@ function Form_toPrimitive(t, r) { if ("object" != Form_typeof(t) || !t) return t
 function Form_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 var Form = /*#__PURE__*/Form_createClass(
 // <form class="form">
-//   <input class="tasks__input" type="text" maxlength="30" placeholder="Введите задачу">
+//   <input class="tasks__input" type="text" placeholder="Введите задачу">
 //   <div class="tooltip hidden">Поле не должно быть пустым!</div>
 //   <div class="tooltip hidden">Заметка уже существует!</div>
-//   <div class="tooltip hidden">Это максимально допустимая длина!</div>
 // </form>
 function Form() {
   Form_classCallCheck(this, Form);
@@ -5241,7 +5240,6 @@ function Form() {
   this.tasksInputElement = document.createElement('input');
   this.tasksInputElement.classList.add('tasks__input');
   this.tasksInputElement.type = 'text';
-  this.tasksInputElement.maxLength = '25';
   this.tasksInputElement.placeholder = 'Введите задачу';
   this.tooltipEmptyElement = document.createElement('div');
   this.tooltipEmptyElement.classList.add('tooltip', 'hidden');
@@ -5249,10 +5247,7 @@ function Form() {
   this.tooltipExistElement = document.createElement('div');
   this.tooltipExistElement.classList.add('tooltip', 'hidden');
   this.tooltipExistElement.textContent = 'Заметка уже существует!';
-  this.tooltipLengthElement = document.createElement('div');
-  this.tooltipLengthElement.classList.add('tooltip', 'hidden');
-  this.tooltipLengthElement.textContent = 'Это максимальная длина!';
-  this.element.append(this.tasksInputElement, this.tooltipEmptyElement, this.tooltipExistElement, this.tooltipLengthElement);
+  this.element.append(this.tasksInputElement, this.tooltipEmptyElement, this.tooltipExistElement);
 });
 
 ;// CONCATENATED MODULE: ./src/js/PinnedTasks.js
@@ -5386,7 +5381,6 @@ var Controller = /*#__PURE__*/function () {
     this.input = this.inputTooltipElement.tasksInputElement;
     this.tooltipEmpty = this.inputTooltipElement.tooltipEmptyElement;
     this.tooltipExists = this.inputTooltipElement.tooltipExistElement;
-    this.tooltipLength = this.inputTooltipElement.tooltipLengthElement;
     this.pinnedTasksElement = new PinnedTasks();
     this.pinnedTasks = this.pinnedTasksElement.element;
     this.noPinnedTasks = this.pinnedTasksElement.noPinnedTasksElement;
@@ -5441,7 +5435,6 @@ var Controller = /*#__PURE__*/function () {
     value: function hideTooltips() {
       this.tooltipEmpty.classList.add('hidden');
       this.tooltipExists.classList.add('hidden');
-      this.tooltipLength.classList.add('hidden');
     }
 
     // если на момент события в поле был текст, то чистим поле и убираем подсказки:
@@ -5586,10 +5579,10 @@ var Controller = /*#__PURE__*/function () {
     value: function onInput() {
       this.hideTooltips();
       this.taskText = this.input.value.trim().toLowerCase(); // содержимое input-а
-      if (this.input.value.length === 25) {
-        this.tooltipLength.classList.remove('hidden');
-      } else if (!this.taskText) {
+
+      if (!this.taskText) {
         this.showTasks();
+        return;
       }
       this.sort();
     }
