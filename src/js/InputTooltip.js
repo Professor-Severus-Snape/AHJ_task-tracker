@@ -12,8 +12,7 @@ export default class InputTooltip {
     this.tasksInputElement = document.createElement('input');
     this.tasksInputElement.classList.add('tasks__input');
     this.tasksInputElement.type = 'text';
-    // this.tasksInputElement.maxLength = '30'; // NOTE: вернуть после отладки
-    this.tasksInputElement.maxLength = '3'; // NOTE: отладка !!!
+    this.tasksInputElement.maxLength = '25';
     this.tasksInputElement.placeholder = 'Введите задачу';
 
     this.tooltipEmptyElement = document.createElement('div');

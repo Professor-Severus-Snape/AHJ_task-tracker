@@ -68,7 +68,7 @@ body {
 .task {
   position: relative;
 
-  padding: 15px 50px 15px 30px;
+  padding: 15px 90px 15px 30px;
   border: 1px solid black;
   border-radius: 50px;
   background-color: lightcyan;
@@ -81,7 +81,7 @@ body {
 .task__btn {
   position: absolute;
   top: 50%;
-  right: 20px;
+  right: 60px;
   transform: translateY(-50%);
 
   width: 20px;
@@ -109,7 +109,37 @@ body {
 }
 
 .task__btn:has(.task__btn_pin):hover {
-  background-color: rgb(252, 80, 204);
+  background-color: rgb(252, 172, 229);
+}
+
+.task__remove-btn {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.task__remove-btn:hover {
+  background-color: red;
+}
+
+.task__remove-btn_pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 20px;
+  height: 20px;
+
+  text-align: center;
 }
 
 .copyrights {
