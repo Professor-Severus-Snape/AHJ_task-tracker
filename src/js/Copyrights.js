@@ -12,9 +12,6 @@ export default class Copyrights {
     this.link.textContent = '© Professor-Severus-Snape, 2024';
 
     this.element.append(this.link);
-
-    // const link = document.querySelector('.copyrights__link');
-    // this.copyrights = link ? link.textContent : '';
   }
 
   static stoleRights() {
