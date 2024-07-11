@@ -5210,7 +5210,7 @@ function MainTitle() {
   this.element.textContent = 'Task tracker';
 });
 
-;// CONCATENATED MODULE: ./src/js/InputTooltip.js
+;// CONCATENATED MODULE: ./src/js/Form.js
 
 
 
@@ -5221,23 +5221,23 @@ function MainTitle() {
 
 
 
-function InputTooltip_typeof(o) { "@babel/helpers - typeof"; return InputTooltip_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, InputTooltip_typeof(o); }
-function InputTooltip_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, InputTooltip_toPropertyKey(o.key), o); } }
-function InputTooltip_createClass(e, r, t) { return r && InputTooltip_defineProperties(e.prototype, r), t && InputTooltip_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function InputTooltip_toPropertyKey(t) { var i = InputTooltip_toPrimitive(t, "string"); return "symbol" == InputTooltip_typeof(i) ? i : i + ""; }
-function InputTooltip_toPrimitive(t, r) { if ("object" != InputTooltip_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != InputTooltip_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function InputTooltip_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-var InputTooltip = /*#__PURE__*/InputTooltip_createClass(
-// <div class="input-tooltip">
+function Form_typeof(o) { "@babel/helpers - typeof"; return Form_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Form_typeof(o); }
+function Form_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Form_toPropertyKey(o.key), o); } }
+function Form_createClass(e, r, t) { return r && Form_defineProperties(e.prototype, r), t && Form_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function Form_toPropertyKey(t) { var i = Form_toPrimitive(t, "string"); return "symbol" == Form_typeof(i) ? i : i + ""; }
+function Form_toPrimitive(t, r) { if ("object" != Form_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Form_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function Form_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+var Form = /*#__PURE__*/Form_createClass(
+// <form class="form">
 //   <input class="tasks__input" type="text" maxlength="30" placeholder="Введите задачу">
 //   <div class="tooltip hidden">Поле не должно быть пустым!</div>
 //   <div class="tooltip hidden">Заметка уже существует!</div>
 //   <div class="tooltip hidden">Это максимально допустимая длина!</div>
-// </div>
-function InputTooltip() {
-  InputTooltip_classCallCheck(this, InputTooltip);
-  this.element = document.createElement('div');
-  this.element.classList.add('input-tooltip');
+// </form>
+function Form() {
+  Form_classCallCheck(this, Form);
+  this.element = document.createElement('form');
+  this.element.classList.add('form');
   this.tasksInputElement = document.createElement('input');
   this.tasksInputElement.classList.add('tasks__input');
   this.tasksInputElement.type = 'text';
@@ -5381,8 +5381,8 @@ var Controller = /*#__PURE__*/function () {
     this.container = document.querySelector('.container');
     this.tasks = new Tasks().element;
     this.mainTitle = new MainTitle().element;
-    this.inputTooltipElement = new InputTooltip();
-    this.inputTooltip = this.inputTooltipElement.element;
+    this.inputTooltipElement = new Form();
+    this.form = this.inputTooltipElement.element;
     this.input = this.inputTooltipElement.tasksInputElement;
     this.tooltipEmpty = this.inputTooltipElement.tooltipEmptyElement;
     this.tooltipExists = this.inputTooltipElement.tooltipExistElement;
@@ -5405,8 +5405,8 @@ var Controller = /*#__PURE__*/function () {
     value: function init() {
       this.render();
       this.checkRights();
+      this.form.addEventListener('submit', this.onFormSubmit.bind(this));
       this.input.addEventListener('input', this.onInput.bind(this));
-      this.input.addEventListener('keyup', this.onEnterKeyUp.bind(this));
       this.onClickHandler = this.onClick.bind(this);
       this.onClickPinHandler = this.onClickPin.bind(this);
       this.onClickRemoveHandler = this.onClickRemove.bind(this);
@@ -5420,7 +5420,7 @@ var Controller = /*#__PURE__*/function () {
       this.container.append(this.tasks);
       this.container.append(this.copyrights);
       this.tasks.append(this.mainTitle);
-      this.tasks.append(this.inputTooltip);
+      this.tasks.append(this.form);
       this.tasks.append(this.pinnedTasks);
       this.tasks.append(this.allTasks);
     }
@@ -5594,22 +5594,21 @@ var Controller = /*#__PURE__*/function () {
       this.sort();
     }
   }, {
-    key: "onEnterKeyUp",
-    value: function onEnterKeyUp(event) {
-      if (event.code === 'Enter') {
-        this.clean();
-        this.showTasks();
-        if (!this.taskText) {
-          this.tooltipEmpty.classList.remove('hidden');
-          return;
-        }
+    key: "onFormSubmit",
+    value: function onFormSubmit(event) {
+      event.preventDefault();
+      this.clean();
+      this.showTasks();
+      if (!this.taskText) {
+        this.tooltipEmpty.classList.remove('hidden');
+        return;
+      }
 
-        // проверка наличия в списках элемента с введенным текстом:
-        if (!this.allTasksList.includes(this.taskText) && !this.pinnedTasksList.includes(this.taskText)) {
-          this.addNewTask(this.taskText);
-        } else {
-          this.tooltipExists.classList.remove('hidden');
-        }
+      // проверка наличия в списках элемента с введенным текстом:
+      if (!this.allTasksList.includes(this.taskText) && !this.pinnedTasksList.includes(this.taskText)) {
+        this.addNewTask(this.taskText);
+      } else {
+        this.tooltipExists.classList.remove('hidden');
       }
     }
   }, {
@@ -5618,7 +5617,6 @@ var Controller = /*#__PURE__*/function () {
       var _this$pinnedTasksList;
       this.clean();
       var task = event.target.closest('.task');
-      // const text = task.textContent;
       var text = task.textContent.slice(0, -1);
       var allTaskIndex = this.allTasksList.findIndex(function (str) {
         return str === text;
@@ -5653,22 +5651,16 @@ var Controller = /*#__PURE__*/function () {
     key: "onClickPin",
     value: function onClickPin(event) {
       this.clean();
-      // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-      // if (this.input.value) {
-      //   this.resetInput();
-      //   this.hideTooltips();
-      // }
-
       var task = event.target.closest('.task');
       var text = task.textContent.slice(0, -2);
       var taskIndex = this.pinnedTasksList.findIndex(function (str) {
         return str === text;
       });
 
-      // 1. Удаление строки из this.pinnedTasksList:
+      // 1. удаляем строки из this.pinnedTasksList:
       this.pinnedTasksList.splice(taskIndex, 1);
 
-      // 2. Создание узла в DOM (раздел All Tasks) и строки в this.allTasksList:
+      // 2. создаем узел в DOM (раздел All Tasks) и строку в this.allTasksList:
       this.addNewTask(text);
 
       // 3. удаляем обработчик:
@@ -5688,19 +5680,13 @@ var Controller = /*#__PURE__*/function () {
     key: "onClickRemove",
     value: function onClickRemove(event) {
       this.clean();
-      // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-      // if (this.input.value) {
-      //   this.resetInput();
-      //   this.hideTooltips();
-      // }
-
       var task = event.target.closest('.task');
       var text = task.textContent.slice(0, -1);
       var allTaskIndex = this.allTasksList.findIndex(function (str) {
         return str === text;
       });
 
-      // 1. Удаление строки из this.allTasksList:
+      // 1. удаляем строку из this.allTasksList:
       this.allTasksList.splice(allTaskIndex, 1);
 
       // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
@@ -5726,36 +5712,26 @@ var Controller = /*#__PURE__*/function () {
     key: "onClickRemovePin",
     value: function onClickRemovePin(event) {
       this.clean();
-      // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-      // if (this.input.value) {
-      //   this.resetInput();
-      //   this.hideTooltips();
-      // }
-
       var task = event.target.closest('.task');
       var text = task.textContent.slice(0, -2);
       var pinnedTaskIndex = this.pinnedTasksList.findIndex(function (str) {
         return str === text;
       });
 
-      // 1. Удаление строки из this.pinnedTasksList:
+      // 1. удаляем строку из this.pinnedTasksList:
       this.pinnedTasksList.splice(pinnedTaskIndex, 1);
 
-      // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
-      // const taskIndex = this.tasksList.findIndex((obj) => Object.keys(obj).includes(text));
-      // this.tasksList.splice(taskIndex, 1);
-
-      // 3. удаляем обработчик:
+      // 2. удаляем обработчик:
       var taskRemoveBtnPin = task.querySelector('.task__remove-btn_pin');
       taskRemoveBtnPin.removeEventListener('click', this.onClickRemovePinHandler);
 
-      // 4. удаляем сам узел из DOM (из раздела Pinned Tasks):
+      // 3. удаляем сам узел из DOM (из раздела Pinned Tasks):
       task.remove();
       if (!this.pinnedTasksList.length) {
         this.noPinnedTasks.classList.remove('hidden');
       }
 
-      // 5. снимаем фильтр:
+      // 4. снимаем фильтр:
       this.showTasks();
     }
   }]);
