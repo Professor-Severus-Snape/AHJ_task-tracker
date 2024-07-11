@@ -5069,18 +5069,6 @@ var es_symbol_description = __webpack_require__(9463);
 var es_symbol_iterator = __webpack_require__(2259);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.to-primitive.js
 var es_symbol_to_primitive = __webpack_require__(5700);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
-var es_array_iterator = __webpack_require__(3792);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.date.to-primitive.js
-var es_date_to_primitive = __webpack_require__(9572);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
-var es_number_constructor = __webpack_require__(2892);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
-var es_object_to_string = __webpack_require__(6099);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
-var es_string_iterator = __webpack_require__(7764);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
-var web_dom_collections_iterator = __webpack_require__(2953);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
 var es_array_filter = __webpack_require__(2008);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.find-index.js
@@ -5089,30 +5077,42 @@ var es_array_find_index = __webpack_require__(8980);
 var es_array_from = __webpack_require__(3418);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__(4423);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__(3792);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.slice.js
 var es_array_slice = __webpack_require__(4782);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.sort.js
 var es_array_sort = __webpack_require__(6910);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
 var es_array_splice = __webpack_require__(4554);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.date.to-primitive.js
+var es_date_to_primitive = __webpack_require__(9572);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__(2010);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
+var es_number_constructor = __webpack_require__(2892);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.entries.js
 var es_object_entries = __webpack_require__(5506);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__(9432);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__(6099);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__(7495);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
 var es_regexp_to_string = __webpack_require__(8781);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.includes.js
 var es_string_includes = __webpack_require__(1699);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
+var es_string_iterator = __webpack_require__(7764);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.starts-with.js
 var es_string_starts_with = __webpack_require__(1392);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.trim.js
 var es_string_trim = __webpack_require__(2762);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
 var web_dom_collections_for_each = __webpack_require__(3500);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
+var web_dom_collections_iterator = __webpack_require__(2953);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.link.js
 var es_string_link = __webpack_require__(778);
 ;// CONCATENATED MODULE: ./src/js/Copyrights.js
@@ -5317,8 +5317,8 @@ function AllTasks() {
   this.element.append(this.titleElement, this.noTasksElement);
 });
 
-;// CONCATENATED MODULE: ./src/js/Controller.js
-function Controller_typeof(o) { "@babel/helpers - typeof"; return Controller_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, Controller_typeof(o); }
+;// CONCATENATED MODULE: ./src/js/App.js
+function App_typeof(o) { "@babel/helpers - typeof"; return App_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, App_typeof(o); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -5355,21 +5355,21 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-function _defineProperty(e, r, t) { return (r = Controller_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function Controller_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function Controller_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, Controller_toPropertyKey(o.key), o); } }
-function Controller_createClass(e, r, t) { return r && Controller_defineProperties(e.prototype, r), t && Controller_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function Controller_toPropertyKey(t) { var i = Controller_toPrimitive(t, "string"); return "symbol" == Controller_typeof(i) ? i : i + ""; }
-function Controller_toPrimitive(t, r) { if ("object" != Controller_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != Controller_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _defineProperty(e, r, t) { return (r = App_toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function App_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function App_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, App_toPropertyKey(o.key), o); } }
+function App_createClass(e, r, t) { return r && App_defineProperties(e.prototype, r), t && App_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function App_toPropertyKey(t) { var i = App_toPrimitive(t, "string"); return "symbol" == App_typeof(i) ? i : i + ""; }
+function App_toPrimitive(t, r) { if ("object" != App_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != App_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
 
 
 
-var Controller = /*#__PURE__*/function () {
-  function Controller() {
-    Controller_classCallCheck(this, Controller);
+var App = /*#__PURE__*/function () {
+  function App() {
+    App_classCallCheck(this, App);
     this.container = document.querySelector('.container');
     this.tasks = new Tasks().element;
     this.mainTitle = new MainTitle().element;
@@ -5391,7 +5391,7 @@ var Controller = /*#__PURE__*/function () {
     this.copyrights = new Copyrights().element;
     this.init();
   }
-  return Controller_createClass(Controller, [{
+  return App_createClass(App, [{
     key: "init",
     value: function init() {
       this.render();
@@ -5727,41 +5727,11 @@ var Controller = /*#__PURE__*/function () {
   }]);
 }();
 
-;// CONCATENATED MODULE: ./src/js/App.js
-
-
-
-
-
-
-
-
-
-
-function App_typeof(o) { "@babel/helpers - typeof"; return App_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, App_typeof(o); }
-function App_classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function App_defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, App_toPropertyKey(o.key), o); } }
-function App_createClass(e, r, t) { return r && App_defineProperties(e.prototype, r), t && App_defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function App_toPropertyKey(t) { var i = App_toPrimitive(t, "string"); return "symbol" == App_typeof(i) ? i : i + ""; }
-function App_toPrimitive(t, r) { if ("object" != App_typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != App_typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-
-var App = /*#__PURE__*/function () {
-  function App() {
-    App_classCallCheck(this, App);
-  }
-  return App_createClass(App, null, [{
-    key: "init",
-    value: function init() {
-      this.controller = new Controller();
-    }
-  }]);
-}();
-
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  App.init();
+  new App().init();
 });
 /******/ })()
 ;
