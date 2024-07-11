@@ -1,7 +1,7 @@
 import Copyrights from './Copyrights';
 import Tasks from './Tasks';
 import MainTitle from './MainTitle';
-import InputTooltip from './InputTooltip';
+import Form from './Form';
 import PinnedTasks from './PinnedTasks';
 import AllTasks from './AllTasks';
 
@@ -13,8 +13,8 @@ export default class Controller {
 
     this.mainTitle = new MainTitle().element;
 
-    this.inputTooltipElement = new InputTooltip();
-    this.inputTooltip = this.inputTooltipElement.element;
+    this.inputTooltipElement = new Form();
+    this.form = this.inputTooltipElement.element;
     this.input = this.inputTooltipElement.tasksInputElement;
     this.tooltipEmpty = this.inputTooltipElement.tooltipEmptyElement;
     this.tooltipExists = this.inputTooltipElement.tooltipExistElement;
@@ -40,8 +40,8 @@ export default class Controller {
   init() {
     this.render();
     this.checkRights();
+    this.form.addEventListener('submit', this.onFormSubmit.bind(this));
     this.input.addEventListener('input', this.onInput.bind(this));
-    this.input.addEventListener('keyup', this.onEnterKeyUp.bind(this));
     this.onClickHandler = this.onClick.bind(this);
     this.onClickPinHandler = this.onClickPin.bind(this);
     this.onClickRemoveHandler = this.onClickRemove.bind(this);
@@ -53,7 +53,7 @@ export default class Controller {
     this.container.append(this.tasks);
     this.container.append(this.copyrights);
     this.tasks.append(this.mainTitle);
-    this.tasks.append(this.inputTooltip);
+    this.tasks.append(this.form);
     this.tasks.append(this.pinnedTasks);
     this.tasks.append(this.allTasks);
   }
@@ -220,23 +220,23 @@ export default class Controller {
     this.sort();
   }
 
-  onEnterKeyUp(event) {
-    if (event.code === 'Enter') {
-      this.clean();
-      this.showTasks();
+  onFormSubmit(event) {
+    event.preventDefault();
 
-      if (!this.taskText) {
-        this.tooltipEmpty.classList.remove('hidden');
-        return;
-      }
+    this.clean();
+    this.showTasks();
 
-      // проверка наличия в списках элемента с введенным текстом:
-      if (!this.allTasksList.includes(this.taskText)
-        && !this.pinnedTasksList.includes(this.taskText)) {
-        this.addNewTask(this.taskText);
-      } else {
-        this.tooltipExists.classList.remove('hidden');
-      }
+    if (!this.taskText) {
+      this.tooltipEmpty.classList.remove('hidden');
+      return;
+    }
+
+    // проверка наличия в списках элемента с введенным текстом:
+    if (!this.allTasksList.includes(this.taskText)
+      && !this.pinnedTasksList.includes(this.taskText)) {
+      this.addNewTask(this.taskText);
+    } else {
+      this.tooltipExists.classList.remove('hidden');
     }
   }
 
@@ -244,7 +244,6 @@ export default class Controller {
     this.clean();
 
     const task = event.target.closest('.task');
-    // const text = task.textContent;
     const text = task.textContent.slice(0, -1);
     const allTaskIndex = this.allTasksList.findIndex((str) => str === text);
 
@@ -275,20 +274,15 @@ export default class Controller {
 
   onClickPin(event) {
     this.clean();
-    // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-    // if (this.input.value) {
-    //   this.resetInput();
-    //   this.hideTooltips();
-    // }
 
     const task = event.target.closest('.task');
     const text = task.textContent.slice(0, -2);
     const taskIndex = this.pinnedTasksList.findIndex((str) => str === text);
 
-    // 1. Удаление строки из this.pinnedTasksList:
+    // 1. удаляем строки из this.pinnedTasksList:
     this.pinnedTasksList.splice(taskIndex, 1);
 
-    // 2. Создание узла в DOM (раздел All Tasks) и строки в this.allTasksList:
+    // 2. создаем узел в DOM (раздел All Tasks) и строку в this.allTasksList:
     this.addNewTask(text);
 
     // 3. удаляем обработчик:
@@ -308,17 +302,12 @@ export default class Controller {
 
   onClickRemove(event) {
     this.clean();
-    // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-    // if (this.input.value) {
-    //   this.resetInput();
-    //   this.hideTooltips();
-    // }
 
     const task = event.target.closest('.task');
     const text = task.textContent.slice(0, -1);
     const allTaskIndex = this.allTasksList.findIndex((str) => str === text);
 
-    // 1. Удаление строки из this.allTasksList:
+    // 1. удаляем строку из this.allTasksList:
     this.allTasksList.splice(allTaskIndex, 1);
 
     // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
@@ -342,35 +331,26 @@ export default class Controller {
 
   onClickRemovePin(event) {
     this.clean();
-    // если на момент клика в поле был текст, то чистим поле и убираем подсказки:
-    // if (this.input.value) {
-    //   this.resetInput();
-    //   this.hideTooltips();
-    // }
 
     const task = event.target.closest('.task');
     const text = task.textContent.slice(0, -2);
     const pinnedTaskIndex = this.pinnedTasksList.findIndex((str) => str === text);
 
-    // 1. Удаление строки из this.pinnedTasksList:
+    // 1. удаляем строку из this.pinnedTasksList:
     this.pinnedTasksList.splice(pinnedTaskIndex, 1);
 
-    // 2. удаляем объект вида { текст заметки: заметка } из общего массива this.tasksList:
-    // const taskIndex = this.tasksList.findIndex((obj) => Object.keys(obj).includes(text));
-    // this.tasksList.splice(taskIndex, 1);
-
-    // 3. удаляем обработчик:
+    // 2. удаляем обработчик:
     const taskRemoveBtnPin = task.querySelector('.task__remove-btn_pin');
     taskRemoveBtnPin.removeEventListener('click', this.onClickRemovePinHandler);
 
-    // 4. удаляем сам узел из DOM (из раздела Pinned Tasks):
+    // 3. удаляем сам узел из DOM (из раздела Pinned Tasks):
     task.remove();
 
     if (!this.pinnedTasksList.length) {
       this.noPinnedTasks.classList.remove('hidden');
     }
 
-    // 5. снимаем фильтр:
+    // 4. снимаем фильтр:
     this.showTasks();
   }
 }

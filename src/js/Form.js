@@ -1,13 +1,13 @@
-export default class InputTooltip {
-  // <div class="input-tooltip">
+export default class Form {
+  // <form class="form">
   //   <input class="tasks__input" type="text" maxlength="30" placeholder="Введите задачу">
   //   <div class="tooltip hidden">Поле не должно быть пустым!</div>
   //   <div class="tooltip hidden">Заметка уже существует!</div>
   //   <div class="tooltip hidden">Это максимально допустимая длина!</div>
-  // </div>
+  // </form>
   constructor() {
-    this.element = document.createElement('div');
-    this.element.classList.add('input-tooltip');
+    this.element = document.createElement('form');
+    this.element.classList.add('form');
 
     this.tasksInputElement = document.createElement('input');
     this.tasksInputElement.classList.add('tasks__input');
