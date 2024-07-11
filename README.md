@@ -1,5 +1,7 @@
 # Домашнее задание к занятию "3. Обработка событий"
 
+[![Build status](https://ci.appveyor.com/api/projects/status/3ulwvk1qk63bd82o?svg=true)](https://ci.appveyor.com/project/Professor-Severus-Snape/ahj-task-tracker)
+
 Правила сдачи задания:
 
 1. В рамках этого ДЗ можно использовать любой менеджер пакетов.
