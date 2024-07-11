@@ -5146,9 +5146,6 @@ var Copyrights = /*#__PURE__*/function () {
     this.link.href = 'https://github.com/Professor-Severus-Snape';
     this.link.textContent = '© Professor-Severus-Snape, 2024';
     this.element.append(this.link);
-
-    // const link = document.querySelector('.copyrights__link');
-    // this.copyrights = link ? link.textContent : '';
   }
   return _createClass(Copyrights, null, [{
     key: "stoleRights",
